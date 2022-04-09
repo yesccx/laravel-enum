@@ -1,28 +1,17 @@
 <h1 align="center">Laravel-Enum</h1>
 <p align="center">简单易用的枚举类实现，通过枚举类统一管理枚举值</p>
 
-## 功能特点
+<p align="center"><a href="https://github.com/yesccx/laravel-enum"><img alt="For Laravel 5" src="https://img.shields.io/badge/laravel-9.*-green.svg" style="max-width:100%;"></a>
+<a href="https://packagist.org/packages/yesccx/laravel-enum"><img alt="Latest Stable Version" src="https://img.shields.io/packagist/v/yesccx/laravel-enum.svg" style="max-width:100%;"></a>
+<a href="https://packagist.org/packages/yesccx/laravel-enum"><img alt="Latest Unstable Version" src="https://img.shields.io/packagist/vpre/yesccx/laravel-enum.svg" style="max-width:100%;"></a>
+<a href="https://packagist.org/packages/yesccx/laravel-enum"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/yesccx/laravel-enum.svg?maxAge=2592000" style="max-width:100%;"></a>
+<a href="https://packagist.org/packages/yesccx/laravel-enum"><img alt="License" src="https://img.shields.io/packagist/l/yesccx/laravel-enum.svg?maxAge=2592000" style="max-width:100%;"></a></p>
 
-- 支持 `Laravel 9+`
-- 统一管理表或对象的可枚举字段，在任意处利用枚举类对值进行合法性校验
-- 内置的枚举值 表单验证规则
-- 利用预定义的映射关系，解析出枚举值对应的含义说明
-- 使用 `PHP8.1` 的注解功能快速定义枚举类
-
-## 安装
-
-| 运行环境要求     |
-| ------------ |
-| PHP ^8.1.0   |
-| Laravel Framework ^9.0 |
-
-```shell
-composer require yesccx/laravel-enum
-```
-
+## 目录
+- [目录](#目录)
 - [功能特点](#功能特点)
-- [安装](#安装)
 - [开始使用](#开始使用)
+  - [安装](#安装)
   - [基础用法](#基础用法)
     - [定义枚举类](#定义枚举类)
     - [利用枚举类进行值判断/赋值](#利用枚举类进行值判断赋值)
@@ -38,7 +27,26 @@ composer require yesccx/laravel-enum
 - [TODO](#todo)
 - [License](#license)
 
+## 功能特点
+
+- 支持 `Laravel 9+`
+- 统一管理表或对象的可枚举字段，在任意处利用枚举类对值进行合法性校验
+- 内置的枚举值 表单验证规则
+- 利用预定义的映射关系，解析出枚举值对应的含义说明
+- 使用 `PHP8.1` 的注解功能快速定义枚举类
+
 ## 开始使用
+
+### 安装
+
+| 运行环境要求     |
+| ------------ |
+| PHP ^8.1.0   |
+| Laravel Framework ^9.0 |
+
+```shell
+composer require yesccx/laravel-enum
+```
 
 ### 基础用法
 
