@@ -1,20 +1,23 @@
 <?php
 
-namespace Yesccx\LaravelEnum;
+declare(strict_types = 1);
+
+namespace Yesccx\Enum;
 
 use Illuminate\Support\Collection;
+use Yesccx\Supports\EnumCollection;
 
 /**
  * 枚举基类
  */
-abstract class Enum
+abstract class BaseEnum
 {
     /**
      * 字段含义映射
      *
      * @var array
      */
-    protected $columnMap = [];
+    protected array $columnMap = [];
 
     /**
      * 当前字段名
@@ -29,15 +32,20 @@ abstract class Enum
      */
     public function __construct(string $column = '')
     {
-        $this->column = $column;
+        $isCollection = $this->isCollection();
+
+        $this->column = $isCollection ? $column : static::class;
 
         if (method_exists($this, 'loadColumnMap')) {
-            $this->columnMap = $this->loadColumnMap();
+            $this->columnMap = match (true) {
+                $isCollection => $this->loadColumnMap(),
+                default       => [static::class => $this->loadColumnMap()]
+            };
         }
     }
 
     /**
-     * 实例化
+     * 静态实例化
      *
      * @param string $column 字段名
      * @return static
@@ -115,6 +123,16 @@ abstract class Enum
     public function by(string $column): static
     {
         return $this->useColumn($column);
+    }
+
+    /**
+     * 是否为枚举集合
+     *
+     * @return bool
+     */
+    public function isCollection(): bool
+    {
+        return static::class instanceof EnumCollection;
     }
 
     /**

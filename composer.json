@@ -2,12 +2,16 @@
     "name": "yesccx/laravel-enum",
     "type": "library",
     "description": "laravel enum",
-    "keywords": ["laravel", "enum", "yesccx"],
+    "keywords": [
+        "laravel",
+        "enum",
+        "yesccx"
+    ],
     "homepage": "https://github.com/yesccx/laravel-enum",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Yesccx\\LaravelEnum\\": "src/"
+            "Yesccx\\Enum\\": "src/"
         }
     },
     "authors": [
@@ -18,10 +22,24 @@
     ],
     "require": {
         "php": "^8.1.0",
+        "illuminate/config": "^9.0",
+        "illuminate/console": "^9.0",
         "illuminate/support": "^9.0",
         "illuminate/validation": "^9.0"
     },
     "require-dev": {
-      "laravel/framework": "^9.0"
-    }
+        "ext-json": "*"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Yesccx\\Enum\\EnumServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
