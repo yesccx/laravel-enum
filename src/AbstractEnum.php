@@ -11,7 +11,7 @@ use Yesccx\Enum\Traits\AnnotationScan;
 /**
  * 枚举基类
  */
-abstract class BaseEnum implements EnumAttributes
+abstract class AbstractEnum implements EnumAttributes
 {
     use AnnotationScan;
 

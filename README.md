@@ -70,7 +70,7 @@
 
 ### 定义枚举类
 
-通过继承枚举基类 `Yesccx\Enum\BaseEnum` 定义枚举类，利用类的成员常量来定义枚举值，并使用 `Yesccx\Enum\Supports\Message` 注解来说明枚举值的含义，`Message` 注解的作用是为了收集并管理枚举值，为后续的枚举类相关操作提供基础数据。
+通过继承枚举基类 `Yesccx\Enum\AbstractEnum` 定义枚举类，利用类的成员常量来定义枚举值，并使用 `Yesccx\Enum\Supports\Message` 注解来说明枚举值的含义，`Message` 注解的作用是为了收集并管理枚举值，为后续的枚举类相关操作提供基础数据。
 
 ``` php
 <?php
@@ -79,11 +79,11 @@ declare(strict_types = 1);
 
 namespace App\Enums\User;
 
-use Yesccx\Enum\BaseEnum;
+use Yesccx\Enum\AbstractEnum;
 use Yesccx\Enum\Supports\Message;
 
 # 用户-启用状态
-final class StatusEnum extends BaseEnum
+final class StatusEnum extends AbstractEnum
 {
     #[Message('禁用')]
     public const OFF = 0;
@@ -318,10 +318,10 @@ declare(strict_types = 1);
 
 namespace App\Enums\Model;
 
-use Yesccx\Enum\BaseENum;
+use Yesccx\Enum\AbstractEnum;
 use Yesccx\Enum\Contracts\EnumCollection;
 
-final class UserEnum extends BaseEnum implements EnumCollection
+final class UserEnum extends AbstractEnum implements EnumCollection
 {
     /* ----------- 启用状态 ------------- */
 
@@ -386,7 +386,7 @@ $validator = Validator::make(
 
 #### 自定义枚举类含义及映射
 
-默认情况下会通过 `Message` 注解收集枚举类上的枚举值含义说明及值映射关系，某些特殊场景下 `Message` 注解可能无法满足我们的需求，此时可以通过重写 `BaseEnum` 中的 `loadColumnMap` 方法来自定义映射关系。
+默认情况下会通过 `Message` 注解收集枚举类上的枚举值含义说明及值映射关系，某些特殊场景下 `Message` 注解可能无法满足我们的需求，此时可以通过重写 `AbstractEnum` 中的 `loadColumnMap` 方法来自定义映射关系。
 
 ``` php
 <?php
@@ -395,11 +395,11 @@ declare(strict_types = 1);
 
 namespace App\Enums\User;
 
-use Yesccx\Enum\BaseEnum;
+use Yesccx\Enum\AbstractEnum;
 use Yesccx\Enum\Supports\Message;
 
 # 用户-启用状态
-final class StatusEnum extends BaseEnum
+final class StatusEnum extends AbstractEnum
 {
     public const OFF = 0;
 
