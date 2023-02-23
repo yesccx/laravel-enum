@@ -1,49 +1,28 @@
 <?php
 
-namespace Yesccx\LaravelEnum\Rules;
+declare(strict_types = 1);
+
+namespace Yesccx\Enum\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Throwable;
 
 /**
  * 枚举值验证
  */
-final class EnumRule implements Rule
+class EnumRule implements Rule
 {
     /**
-     * 枚举类
-     *
-     * @var string
-     */
-    protected string $enumClass = '';
-
-    /**
-     * 字段名
-     *
-     * @var string
-     */
-    protected string $attribute = '';
-
-    /**
      * @param string $enumClass 枚举类
      * @param string $attribute 字段名
+     * @param string $suffixMessage 验证错误时的后缀信息
      * @return void
      */
-    public function __construct(string $enumClass, string $attribute = '')
-    {
-        $this->enumClass = $enumClass;
-        $this->attribute = $attribute;
-    }
-
-    /**
-     * make
-     *
-     * @param string $enumClass 枚举类
-     * @param string $attribute 字段名
-     * @return static
-     */
-    public static function make(string $enumClass, string $attribute = ''): static
-    {
-        return new static($enumClass, $attribute);
+    public function __construct(
+        public string $enumClass,
+        public string $attribute = '',
+        public string $suffixMessage = ''
+    ) {
     }
 
     /**
@@ -57,7 +36,11 @@ final class EnumRule implements Rule
     {
         $attribute = $this->attribute ?: $attribute;
 
-        return $this->enumClass::make($attribute)->has($value);
+        try {
+            return $this->enumClass::make($attribute)->has($value);
+        } catch (Throwable) {
+            return false;
+        }
     }
 
     /**
@@ -67,6 +50,8 @@ final class EnumRule implements Rule
      */
     public function message()
     {
-        return sprintf(':attribute 不是有效的值');
+        $suffixMessage = $this->suffixMessage ?: '不是有效的值';
+
+        return sprintf(":attribute {$suffixMessage}");
     }
 }
