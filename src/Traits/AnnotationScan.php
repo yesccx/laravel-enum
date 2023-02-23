@@ -14,19 +14,22 @@ trait AnnotationScan
     /**
      * @return array
      */
-    protected function loadColumnMap(): array
+    public function loadColumnMap(): array
     {
         $columnMap = [];
 
         try {
             $data = AnnotationEnumCollector::get(static::class);
             foreach ($data as $item) {
-                $columnMap[static::class][$item['column']][$item['value']] ??= $item['message'];
+                $columnMap[$item['column']][$item['value']] ??= $item['message'];
             }
         } catch (\Throwable) {
             $columnMap = [];
         }
 
-        return $columnMap;
+        return match (true) {
+            !static::isCollection() => $columnMap[static::class] ?? [],
+            default                 => $columnMap
+        };
     }
 }

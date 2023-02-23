@@ -4,14 +4,17 @@ declare(strict_types = 1);
 
 namespace Yesccx\Enum;
 
-use Illuminate\Support\Collection;
-use Yesccx\Supports\EnumCollection;
+use Yesccx\Enum\Contracts\EnumAttributes;
+use Yesccx\Enum\Contracts\EnumCollection;
+use Yesccx\Enum\Traits\AnnotationScan;
 
 /**
  * 枚举基类
  */
-abstract class BaseEnum
+abstract class BaseEnum implements EnumAttributes
 {
+    use AnnotationScan;
+
     /**
      * 字段含义映射
      *
@@ -32,16 +35,7 @@ abstract class BaseEnum
      */
     public function __construct(string $column = '')
     {
-        $isCollection = $this->isCollection();
-
-        $this->column = $isCollection ? $column : static::class;
-
-        if (method_exists($this, 'loadColumnMap')) {
-            $this->columnMap = match (true) {
-                $isCollection => $this->loadColumnMap(),
-                default       => [static::class => $this->loadColumnMap()]
-            };
-        }
+        $this->initAttributes($column);
     }
 
     /**
@@ -56,7 +50,27 @@ abstract class BaseEnum
     }
 
     /**
-     * 翻译字段值的含义
+     * 初始化
+     *
+     * @param string $column
+     * @return void
+     */
+    protected function initAttributes(string $column = ''): void
+    {
+        $isCollection = static::isCollection();
+
+        $this->column = $isCollection ? $column : static::class;
+
+        if (method_exists($this, 'loadColumnMap')) {
+            $this->columnMap = match (true) {
+                !$isCollection => [static::class => $this->loadColumnMap()],
+                default        => $this->loadColumnMap()
+            };
+        }
+    }
+
+    /**
+     * 翻译值的含义
      *
      * @param mixed $value
      * @param mixed $default 默认值
@@ -68,7 +82,7 @@ abstract class BaseEnum
     }
 
     /**
-     * 判断是否包含某个值
+     * 判断值是否合法
      *
      * @param mixed $value
      * @return bool
@@ -81,24 +95,11 @@ abstract class BaseEnum
     /**
      * 获取值集合
      *
-     * @return Collection
+     * @return array
      */
-    public function values(): Collection
+    public function values(): array
     {
-        return match (true) {
-            empty($this->column) => collect($this->columnMap),
-            default              => collect($this->columnMap[$this->column] ?? [])
-        };
-    }
-
-    /**
-     * 获取所有值集合
-     *
-     * @return Collection
-     */
-    public function all(): Collection
-    {
-        return collect($this->columnMap);
+        return $this->columnMap[$this->column] ?? [];
     }
 
     /**
@@ -126,20 +127,12 @@ abstract class BaseEnum
     }
 
     /**
-     * 是否为枚举集合
+     * 是否为集合
      *
      * @return bool
      */
-    public function isCollection(): bool
+    public static function isCollection(): bool
     {
-        return static::class instanceof EnumCollection;
-    }
-
-    /**
-     * @return array
-     */
-    protected function loadColumnMap(): array
-    {
-        return [];
+        return is_subclass_of(static::class, EnumCollection::class);
     }
 }

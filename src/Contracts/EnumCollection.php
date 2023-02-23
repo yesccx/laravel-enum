@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Yesccx\Supports;
+namespace Yesccx\Enum\Contracts;
 
 interface EnumCollection
 {

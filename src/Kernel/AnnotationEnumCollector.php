@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Yesccx\Enum\Kernel;
 
+use Yesccx\Enum\Supports\Message;
+
 /**
  * 注解枚举收集器
  */
@@ -17,7 +19,7 @@ final class AnnotationEnumCollector
     protected static array $enumCached = [];
 
     /**
-     * 验证是否存在收到到的枚举
+     * 验证是否存在收到的枚举
      *
      * @param string $key
      * @return bool
@@ -71,16 +73,24 @@ final class AnnotationEnumCollector
             foreach ($reflection->getReflectionConstants() as $constant) {
                 if (empty($attributes = $constant->getAttributes(Message::class))) {
                     continue;
-                } elseif (count($arguments = $attributes[0]?->getArguments() ?? []) != 2) {
+                } elseif (count($arguments = $attributes[0]?->getArguments() ?? []) == 0) {
                     continue;
                 }
 
-                ['0' => $column, '1' => $message] = $arguments;
-                if (is_null($message)) {
-                    $message = $column;
-                    $column = static::class;
+                [
+                    '0' => $column,
+                    '1' => $message,
+                    '2' => $value
+                ] = match (count($arguments)) {
+                    1       => [$targetClass, $arguments[0], $constant->getValue()],
+                    2       => [$arguments[0], $arguments[1], $constant->getValue()],
+                    default => [$arguments[0], $arguments[1], $arguments[2]],
+                };
+
+                // 非枚举集合始终以类名作为key
+                if (!$targetClass::isCollection()) {
+                    $column = $targetClass;
                 }
-                $value = $constant->getValue();
 
                 $ret[] = [
                     'column'  => $column,
