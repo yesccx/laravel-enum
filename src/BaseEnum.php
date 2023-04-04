@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Yesccx\Enum;
 
+use Illuminate\Support\Arr;
 use Yesccx\Enum\Contracts\EnumAttributes;
 use Yesccx\Enum\Contracts\EnumCollection;
 use Yesccx\Enum\Traits\AnnotationScan;
@@ -11,7 +12,7 @@ use Yesccx\Enum\Traits\AnnotationScan;
 /**
  * 枚举基类
  */
-abstract class AbstractEnum implements EnumAttributes
+abstract class BaseEnum implements EnumAttributes
 {
     use AnnotationScan;
 
@@ -100,6 +101,19 @@ abstract class AbstractEnum implements EnumAttributes
     public function values(): array
     {
         return $this->columnMap[$this->column] ?? [];
+    }
+
+    /**
+     * 获取值映射
+     *
+     * @return array
+     */
+    public function valueMap(): array
+    {
+        return Arr::map($this->values(), fn ($value, $key) => [
+            'key'   => $key,
+            'value' => $value,
+        ]);
     }
 
     /**

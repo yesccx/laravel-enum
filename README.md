@@ -21,6 +21,7 @@
     - [获取枚举值的含义说明](#获取枚举值的含义说明)
     - [使用模型访问器定义字段含义说明](#使用模型访问器定义字段含义说明)
     - [获取某个字段的枚举值范围](#获取某个字段的枚举值范围)
+    - [获取某个字段的键值映射](#获取某个字段的键值映射)
   - [进阶用法](#进阶用法)
     - [枚举集合类](#枚举集合类)
     - [自定义枚举类含义及映射](#自定义枚举类含义及映射)
@@ -60,7 +61,7 @@
 | Laravel Framework ^9.0 |
 
 ``` shell
-> composer require yesccx/laravel-enum
+> composer require yesccx/laravel-enum:1.x
 
 # 如果没有自定义配置项的需求，可以不进行初始化配置文件, 配置项内容参考末尾的API部分
 > php artisan vendor:publish --tag=enum-config
@@ -70,7 +71,7 @@
 
 ### 定义枚举类
 
-通过继承枚举基类 `Yesccx\Enum\AbstractEnum` 定义枚举类，利用类的成员常量来定义枚举值，并使用 `Yesccx\Enum\Supports\Message` 注解来说明枚举值的含义，`Message` 注解的作用是为了收集并管理枚举值，为后续的枚举类相关操作提供基础数据。
+通过继承枚举基类 `Yesccx\Enum\BaseEnum` 定义枚举类，利用类的成员常量来定义枚举值，并使用 `Yesccx\Enum\Supports\Message` 注解来说明枚举值的含义，`Message` 注解的作用是为了收集并管理枚举值，为后续的枚举类相关操作提供基础数据。
 
 ``` php
 <?php
@@ -79,11 +80,11 @@ declare(strict_types = 1);
 
 namespace App\Enums\User;
 
-use Yesccx\Enum\AbstractEnum;
+use Yesccx\Enum\BaseEnum;
 use Yesccx\Enum\Supports\Message;
 
 # 用户-启用状态
-final class StatusEnum extends AbstractEnum
+final class StatusEnum extends BaseEnum
 {
     #[Message('禁用')]
     public const OFF = 0;
@@ -300,10 +301,33 @@ $options = StatusEnum::make()->values();
 var_export($options);
 
 # [
-#     0 => '禁用',
-#     1 => '启用'
+#     "禁用",
+#     "启用"
 # ]
 ```
+
+#### 获取某个字段的键值映射
+
+``` php
+<?php
+
+declare(strict_types = 1);
+
+use App\Enums\User\StatusEnum;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
+$map = StatusEnum::make()->valueMap();
+
+var_export($map);
+
+# [
+#     ["key" => 0, "value" => "禁用"],
+#     ["key" => 1, "value" => "启用"],
+# ]
+```
+
+
 
 ### 进阶用法
 
@@ -318,10 +342,10 @@ declare(strict_types = 1);
 
 namespace App\Enums\Model;
 
-use Yesccx\Enum\AbstractEnum;
+use Yesccx\Enum\BaseEnum;
 use Yesccx\Enum\Contracts\EnumCollection;
 
-final class UserEnum extends AbstractEnum implements EnumCollection
+final class UserEnum extends BaseEnum implements EnumCollection
 {
     /* ----------- 启用状态 ------------- */
 
@@ -386,7 +410,7 @@ $validator = Validator::make(
 
 #### 自定义枚举类含义及映射
 
-默认情况下会通过 `Message` 注解收集枚举类上的枚举值含义说明及值映射关系，某些特殊场景下 `Message` 注解可能无法满足我们的需求，此时可以通过重写 `AbstractEnum` 中的 `loadColumnMap` 方法来自定义映射关系。
+默认情况下会通过 `Message` 注解收集枚举类上的枚举值含义说明及值映射关系，某些特殊场景下 `Message` 注解可能无法满足我们的需求，此时可以通过重写 `BaseEnum` 中的 `loadColumnMap` 方法来自定义映射关系。
 
 ``` php
 <?php
@@ -395,11 +419,11 @@ declare(strict_types = 1);
 
 namespace App\Enums\User;
 
-use Yesccx\Enum\AbstractEnum;
+use Yesccx\Enum\BaseEnum;
 use Yesccx\Enum\Supports\Message;
 
 # 用户-启用状态
-final class StatusEnum extends AbstractEnum
+final class StatusEnum extends BaseEnum
 {
     public const OFF = 0;
 
