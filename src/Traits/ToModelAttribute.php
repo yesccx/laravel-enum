@@ -42,11 +42,11 @@ trait ToModelAttribute
             $matches
         );
 
-        $column = $matches[1] ?? null;
+        $column = mb_strtolower($matches[1] ?? null);
 
         return match (true) {
-            is_null($column) => Attribute::make(get: fn () => $default),
-            default          => static::make($column)->toAttribute($model, $column, $default)
+            empty($column) => Attribute::make(get: fn () => $default),
+            default        => static::make($column)->toAttribute($model, $column, $default)
         };
     }
 }
