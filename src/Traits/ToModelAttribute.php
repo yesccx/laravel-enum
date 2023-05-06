@@ -42,7 +42,7 @@ trait ToModelAttribute
             $matches
         );
 
-        $column = mb_strtolower($matches[1] ?? null);
+        $column = mb_strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1_', $matches[1] ?? ''));
 
         return match (true) {
             empty($column) => Attribute::make(get: fn () => $default),
