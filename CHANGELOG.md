@@ -1,3 +1,9 @@
+## v1.1.4
+
+### Fix
+
+- makeAttribute
+
 ## v1.1.3
 
 ### Fix
