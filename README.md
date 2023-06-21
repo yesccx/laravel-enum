@@ -33,6 +33,9 @@
   - [枚举类方法](#枚举类方法)
     - [translate(mixed $value, mixed $default = null): mixed](#translatemixed-value-mixed-default--null-mixed)
     - [public function has(mixed $value): bool](#public-function-hasmixed-value-bool)
+    - [public function map(): array](#public-function-map-array)
+    - [public function valueMap(): array](#public-function-valuemap-array)
+    - [public function keys(): array](#public-function-keys-array)
     - [public function values(): array](#public-function-values-array)
     - [public function useColumn(string $column): static](#public-function-usecolumnstring-column-static)
     - [public function by(string $column): static](#public-function-bystring-column-static)
@@ -408,6 +411,8 @@ $validator = Validator::make(
 
 ```
 
+> PS：也可以通过直接继承 `BaseEnumCollection` 类来实现同样的功能
+
 #### 自定义枚举类含义及映射
 
 默认情况下会通过 `Message` 注解收集枚举类上的枚举值含义说明及值映射关系，某些特殊场景下 `Message` 注解可能无法满足我们的需求，此时可以通过重写 `BaseEnum` 中的 `loadColumnMap` 方法来自定义映射关系。
@@ -513,11 +518,23 @@ echo ArticleEnum::OFF; # 0
 
 #### public function has(mixed $value): bool
 
+获取键值映射
+
+#### public function map(): array
+
+获取以值为键的映射
+
+#### public function valueMap(): array
+
 判断值是否合法
+
+#### public function keys(): array
+
+获取所有健
 
 #### public function values(): array
 
-获取值集合
+获取所有值
 
 #### public function useColumn(string $column): static
 

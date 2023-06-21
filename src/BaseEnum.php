@@ -94,26 +94,46 @@ abstract class BaseEnum implements EnumAttributes
     }
 
     /**
-     * 获取值集合
+     * 获取键值映射
      *
      * @return array
      */
-    public function values(): array
+    public function map(): array
     {
         return $this->columnMap[$this->column] ?? [];
     }
 
     /**
-     * 获取值映射
+     * 获取以值为键的映射
      *
      * @return array
      */
     public function valueMap(): array
     {
-        return Arr::map($this->values(), fn ($value, $key) => [
+        return Arr::map($this->map(), fn ($value, $key) => [
             'key'   => $key,
             'value' => $value,
         ]);
+    }
+
+    /**
+     * 获取所有健
+     *
+     * @return array
+     */
+    public function keys(): array
+    {
+        return array_keys($this->map());
+    }
+
+    /**
+     * 获取所有值
+     *
+     * @return array
+     */
+    public function values(): array
+    {
+        return array_values($this->map());
     }
 
     /**

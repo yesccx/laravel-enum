@@ -24,7 +24,28 @@ interface EnumAttributes
     public function has(mixed $value): bool;
 
     /**
-     * 获取值集合
+     * 获取键值映射
+     *
+     * @return array
+     */
+    public function map(): array;
+
+    /**
+     * 获取以值为键的映射
+     *
+     * @return array
+     */
+    public function valueMap(): array;
+
+    /**
+     * 获取所有键
+     *
+     * @return array
+     */
+    public function keys(): array;
+
+    /**
+     * 获取所有值
      *
      * @return array
      */
