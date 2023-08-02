@@ -7,6 +7,7 @@ namespace Yesccx\Enum\Supports;
 /**
  * 枚举注解类
  */
+#[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 class Message
 {
     /**
