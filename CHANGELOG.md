@@ -1,3 +1,9 @@
+# v1.1.7
+
+### Fix
+
+- error loading enumeration cache file location
+
 ## v1.1.6
 
 ### Perfect
