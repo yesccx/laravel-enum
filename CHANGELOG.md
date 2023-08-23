@@ -1,3 +1,10 @@
+# v1.1.8
+
+### Fix
+
+- cache_filename check error
+
+
 # v1.1.7
 
 ### Fix
