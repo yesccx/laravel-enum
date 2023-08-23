@@ -113,7 +113,7 @@ final class AnnotationEnumCollector
     public static function loadCacheFile(): void
     {
         try {
-            if (is_file($cachePath = app()->bootstrapPath(config('enum.cache_filename')))) {
+            if (!is_file($cachePath = app()->bootstrapPath(config('enum.cache_filename')))) {
                 return;
             }
 
